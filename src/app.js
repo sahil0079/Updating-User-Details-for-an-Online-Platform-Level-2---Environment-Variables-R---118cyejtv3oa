@@ -12,7 +12,6 @@ app.use(express.json());
 
 // Write PATCH endpoint for editing user details
 
-
 app.patch('/api/v1/details/:id', (req, res) => {
 
   const userId = parseInt(req.params.id);
@@ -21,7 +20,7 @@ app.patch('/api/v1/details/:id', (req, res) => {
 
   //check if alreadt that user exists
 
-  const userToUpdate = findUserById(userId);
+  const userToUpdate = userDetails.find(user => user.id === userId);
 
   if (!userToUpdate) {
     return res.status(404).json(
