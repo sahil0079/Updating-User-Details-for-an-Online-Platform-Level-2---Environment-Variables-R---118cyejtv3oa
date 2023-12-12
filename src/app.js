@@ -12,6 +12,7 @@ app.use(express.json());
 
 // Write PATCH endpoint for editing user details
 
+
 app.patch('/api/v1/details/:id', (req, res) => {
 
   const userId = parseInt(req.params.id);
@@ -35,18 +36,25 @@ app.patch('/api/v1/details/:id', (req, res) => {
   userToUpdate.mail = mail || userToUpdate.mail;
   userToUpdate.number = number || userToUpdate.number;
 
-  return res.status(200).json(
-    {
-      status: "success",
-      message: "User details updated successfully for id: 1",
-      product: {
-        id: userToUpdate.id,
-        name: userToUpdate.name,
-        mail: userToUpdate.mail,
-        number: userToUpdate.number
-      }
+  fs.writeFile(
+    `${__dirname}/data/userDetails.json`,
+    JSON.stringify(userDetails),
+    (err) => {
+      res.status(200).json(
+        {
+          status: "success",
+          message: `User details updated successfully for id: ${userToUpdate.id}`,
+          product: {
+            id: userToUpdate.id,
+            name: userToUpdate.name,
+            mail: userToUpdate.mail,
+            number: userToUpdate.number
+          }
+        }
+      );
     }
-  )
+  );
+
 
 
 })
