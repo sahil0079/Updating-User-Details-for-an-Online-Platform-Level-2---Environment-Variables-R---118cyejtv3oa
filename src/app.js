@@ -12,6 +12,45 @@ app.use(express.json());
 
 // Write PATCH endpoint for editing user details
 
+app.patch('/api/v1/details/:id', (req, res) => {
+
+  const userId = parseInt(req.params.id);
+
+  const { name, mail, number } = req.body;
+
+  //check if alreadt that user exists
+
+  const userToUpdate = findUserById(userId);
+
+  if (!userToUpdate) {
+    return res.status(404).json(
+      { status: "failed", message: "User not found!" }
+    )
+
+  }
+
+  //update user details
+
+  userToUpdate.name = name || userToUpdate.name;
+  userToUpdate.mail = mail || userToUpdate.mail;
+  userToUpdate.number = number || userToUpdate.number;
+
+  return res.status(200).json(
+    {
+      status: "success",
+      message: "User details updated successfully for id: 1",
+      product: {
+        id: userToUpdate.id,
+        name: userToUpdate.name,
+        mail: userToUpdate.mail,
+        number: userToUpdate.number
+      }
+    }
+  )
+
+
+})
+
 // POST endpoint for registering new user
 app.post("/api/v1/details", (req, res) => {
   const newId = userDetails[userDetails.length - 1].id + 1;
